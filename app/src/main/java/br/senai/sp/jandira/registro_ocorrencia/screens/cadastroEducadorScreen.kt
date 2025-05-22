@@ -27,7 +27,7 @@ import androidx.navigation.NavController
 
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController?) {
     var nome by remember { mutableStateOf("") }
     var cargo by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -66,7 +66,13 @@ fun HomeScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.cadastroeduc),
+                text = stringResource(R.string.cadastro),
+                fontSize = 36.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = stringResource(R.string.educador),
                 fontSize = 36.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
@@ -256,5 +262,5 @@ fun HomeScreen(navController: NavController) {
 @Preview(showSystemUi = true)
 @Composable
 private fun HomeScreenPreview() {
-    //HomeScreen()
+    HomeScreen(null)
 }

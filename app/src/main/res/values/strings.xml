@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Projeto Final</string>
-    <string name="cadastroeduc">Cadastro \n Educador</string>
+    <string name="cadastro">Cadastro</string>
+    <string name="educador">Educador</string>
     <string name="nome">Nome</string>
     <string name="cargo">Cargo</string>
     <string name="email">Email</string>
