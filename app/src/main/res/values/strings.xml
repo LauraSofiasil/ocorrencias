@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">registro_ocorrencia</string>
+    <string name="app_name">Projeto Final</string>
+    <string name="cadastroeduc">Cadastro \n Educador</string>
+    <string name="nome">Nome</string>
+    <string name="cargo">Cargo</string>
+    <string name="email">Email</string>
+    <string name="senha">Senha</string>
+    <string name="confirm">Confirmar Senha</string>
+    <string name="chav">Palavra Chave</string>
+    <string name="finalizar">Finalizar Cadastro</string>
 </resources>
