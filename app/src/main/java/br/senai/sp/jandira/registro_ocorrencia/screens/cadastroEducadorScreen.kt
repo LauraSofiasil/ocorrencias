@@ -1,10 +1,14 @@
 package br.senai.sp.jandira.projetofinal.screens
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -23,23 +27,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.registro_ocorrencia.R
 import androidx.compose.runtime.*
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.navigation.NavController
+import br.senai.sp.jandira.registro_ocorrencia.model.Educador
+import br.senai.sp.jandira.registro_ocorrencia.model.ResultEducador
+import br.senai.sp.jandira.registro_ocorrencia.service.RetrofitFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 
 @Composable
 fun HomeScreen(navController: NavController?) {
-    var nome by remember { mutableStateOf("") }
-    var cargo by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var senha by remember { mutableStateOf("") }
-    var confirm by remember { mutableStateOf("") }
-    var chav by remember { mutableStateOf("") }
+    var nome = remember { mutableStateOf("") }
+    var email = remember { mutableStateOf("") }
+    var senha = remember { mutableStateOf("") }
+    var confirm = remember { mutableStateOf("") }
+    var palavra = remember { mutableStateOf("") }
+    var cargo = remember { mutableStateOf("") }
     Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
         Image(
-            painter = painterResource(br.senai.sp.jandira.registro_ocorrencia.R.drawable.fundo2),
+            painter = painterResource(R.drawable.fundo2),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.matchParentSize()
@@ -79,11 +91,11 @@ fun HomeScreen(navController: NavController?) {
             )
 
             TextField(
-                value = nome,
-                onValueChange = { nome = it },
+                value = nome.value,
+                onValueChange = { nome.value = it },
                 placeholder = {
                     Text(
-                        text = stringResource(id = R.string.nome),
+                        text = stringResource(R.string.nome),
                         fontSize = 19.sp,
                         color = Color.Gray
                     )
@@ -105,11 +117,11 @@ fun HomeScreen(navController: NavController?) {
                 )
             )
             TextField(
-                value = cargo,
-                onValueChange = { cargo = it },
+                value = cargo.value,
+                onValueChange = { cargo.value = it },
                 placeholder = {
                     Text(
-                        text = stringResource(id = R.string.cargo),
+                        text = stringResource(R.string.cargo),
                         fontSize = 19.sp,
                         color = Color.Gray
                     )
@@ -119,6 +131,7 @@ fun HomeScreen(navController: NavController?) {
                     .padding(horizontal = 20.dp,
                         vertical = 15.dp),
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), //Mostra um teclado de número
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White,
@@ -130,11 +143,11 @@ fun HomeScreen(navController: NavController?) {
                 )
             )
             TextField(
-                value = email,
-                onValueChange = { email = it },
+                value = email.value,
+                onValueChange = { email.value = it },
                 placeholder = {
                     Text(
-                        text = stringResource(id = R.string.cargo),
+                        text = stringResource(R.string.email),
                         fontSize = 19.sp,
                         color = Color.Gray
                     )
@@ -156,11 +169,11 @@ fun HomeScreen(navController: NavController?) {
                 )
             )
             TextField(
-                value = senha,
-                onValueChange = { senha = it },
+                value = senha.value,
+                onValueChange = { senha.value = it },
                 placeholder = {
                     Text(
-                        text = stringResource(id = R.string.senha),
+                        text = stringResource(R.string.senha),
                         fontSize = 19.sp,
                         color = Color.Gray
                     )
@@ -182,11 +195,11 @@ fun HomeScreen(navController: NavController?) {
                 )
             )
             TextField(
-                value = confirm,
-                onValueChange = { confirm = it },
+                value = confirm.value,
+                onValueChange = { confirm.value = it },
                 placeholder = {
                     Text(
-                        text = stringResource(id = R.string.confirm),
+                        text = stringResource(R.string.confirm),
                         fontSize = 19.sp,
                         color = Color.Gray
                     )
@@ -208,11 +221,11 @@ fun HomeScreen(navController: NavController?) {
                 )
             )
             TextField(
-                value = chav,
-                onValueChange = { chav = it },
+                value = palavra.value,
+                onValueChange = { palavra.value = it },
                 placeholder = {
                     Text(
-                        text = stringResource(id = R.string.chav),
+                        text = stringResource(R.string.chav),
                         fontSize = 19.sp,
                         color = Color.Gray
                     )
@@ -236,7 +249,33 @@ fun HomeScreen(navController: NavController?) {
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(
-                onClick = { },
+                onClick = {
+
+                    val educadorBody = Educador(
+                        nome = nome.value,
+                        email = email.value,
+                        senha = senha.value,
+                        palavra = palavra.value,
+                        cargo = cargo.value.toIntOrNull()?: 0 // Converter o texto para Int
+                    )
+                    val sendEducador = RetrofitFactory()
+                        .getEducadorService()
+                        .insertEducador(educadorBody)
+
+                    sendEducador.enqueue(object : Callback<ResultEducador> {
+                        override fun onResponse(
+                            p0: Call<ResultEducador>,
+                            p1: Response<ResultEducador>
+                        ) {
+                            Log.d("Sucesso", "Cadastrado com sucesso")
+                        }
+
+                        override fun onFailure(p0: Call<ResultEducador>, p1: Throwable) {
+                            Log.d("Erro", "Não foi possivel cadastrar")
+                        }
+
+                    })
+                },
                 modifier = Modifier
                     .height(60.dp)
                     .width(300.dp),

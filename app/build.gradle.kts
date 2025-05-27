@@ -59,4 +59,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Biblioteca de ícones
+    implementation("androidx.compose.material:material-icons-extended-android:1.7.8")
+
+    //Navegação
+    implementation("androidx.navigation:navigation-compose:2.8.9")
+
+    //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+
+    //Gson- Converter
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    //Coil- Image
+    implementation("io.coil-kt:coil-compose:2.7.0")
 }
