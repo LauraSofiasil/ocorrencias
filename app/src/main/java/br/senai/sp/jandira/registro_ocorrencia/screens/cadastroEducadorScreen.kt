@@ -271,7 +271,7 @@ fun HomeScreen(navController: NavController?) {
                         }
 
                         override fun onFailure(p0: Call<ResultEducador>, p1: Throwable) {
-                            Log.d("Erro", "Não foi possivel cadastrar")
+                            Log.d("Erro", "Não foi possivel cadastrar: ${p1.message}")
                         }
 
                     })
