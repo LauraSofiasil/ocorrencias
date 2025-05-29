@@ -80,6 +80,7 @@ fun HomeScreen(navController: NavController) {
                         text = stringResource(id = R.string.nome),
                         fontSize = 19.sp,
                         color = Color.Gray
+
                     )
                 },
                 modifier = Modifier
