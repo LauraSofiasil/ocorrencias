@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">Projeto Final</string>
-    <string name="cadastroaluno">Cadastro \n  Alunos</string>
-    <string name="cadastroeduc">Cadastro \n Educador</string>
-    <string name="cadastroturma">Cadastro \n Turma</string>
+    <string name="aluno">Alunos</string>
+    <string name="cadastro">Cadastro</string>
+    <string name="educador">Educador</string>
     <string name="nome">Nome</string>
     <string name="turma">Turma</string>
     <string name="curso">Curso</string>
     <string name="capacidade">Qntd máxima de alunos</string>
-    <string name="inicio">Ano de inicio</string>
+    <string name="inicio">Período</string>
     <string name="fim">Ano de termino</string>
     <string name="cargo">Cargo</string>
     <string name="email">Email</string>

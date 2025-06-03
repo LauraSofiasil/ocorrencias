@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.senai.sp.jandira.registro_ocorrencia.R
+import br.senai.sp.jandira.registro_ocorrencia.screens.NextScreen
 
 @Composable
 fun NextScreen(navController: NavController?) {
@@ -24,7 +25,7 @@ fun NextScreen(navController: NavController?) {
     ) {
         androidx.compose.foundation.Image(
             painter = painterResource(R.drawable.fundo2),
-            contentDescription = null,
+            contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier.matchParentSize()
         )

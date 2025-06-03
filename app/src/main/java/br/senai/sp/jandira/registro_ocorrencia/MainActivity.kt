@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.senai.sp.jandira.projetofinal.screens.CadastroAlunoScreen
+import br.senai.sp.jandira.projetofinal.screens.CadastroTurmaScreen
 import br.senai.sp.jandira.projetofinal.screens.HomeScreen
 import br.senai.sp.jandira.registro_ocorrencia.screens.NextScreen
 import br.senai.sp.jandira.registro_ocorrencia.ui.theme.Registro_ocorrenciaTheme
@@ -37,7 +39,7 @@ fun AppNavGraph() {
             NextScreen(navController)
         }
         composable("home_screen") {
-            HomeScreen(navController)
+            CadastroAlunoScreen(navController)
         }
     }
 }

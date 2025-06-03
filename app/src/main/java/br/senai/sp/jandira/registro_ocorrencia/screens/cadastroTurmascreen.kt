@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.projetofinal.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,15 +14,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import br.senai.sp.jandira.registro_ocorrencia.R
+import br.senai.sp.jandira.registro_ocorrencia.model.Result
+import br.senai.sp.jandira.registro_ocorrencia.model.Turma
+import br.senai.sp.jandira.registro_ocorrencia.service.RetrofitFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
-fun CadastroTurmaScreen() {
-    var nome by remember { mutableStateOf("") }
-    var matricula by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var telefone by remember { mutableStateOf("") }
-    var dataNascimento by remember { mutableStateOf("") }
+fun CadastroTurmaScreen(navController: NavController?) {
+    val nome = remember { mutableStateOf("") }
+    val periodo = remember { mutableStateOf("") }
+    val curso = remember { mutableStateOf("") }
+    val max = remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -29,7 +36,7 @@ fun CadastroTurmaScreen() {
     ) {
         androidx.compose.foundation.Image(
             painter = androidx.compose.ui.res.painterResource(R.drawable.fundo2),
-            contentDescription = null,
+            contentDescription = "",
             contentScale = androidx.compose.ui.layout.ContentScale.Crop,
             modifier = Modifier.matchParentSize()
         )
@@ -55,13 +62,19 @@ fun CadastroTurmaScreen() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.cadastroturma),
+                text = stringResource(R.string.cadastro),
+                fontSize = 36.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = stringResource(R.string.turma),
                 fontSize = 36.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(50.dp))
 
             Row(
                 modifier = Modifier
@@ -82,8 +95,8 @@ fun CadastroTurmaScreen() {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     TextField(
-                        value = nome,
-                        onValueChange = { nome = it },
+                        value = nome.value,
+                        onValueChange = { nome.value = it },
                         placeholder = {
                             Text(
                                 text = stringResource(id = R.string.turma),
@@ -93,7 +106,8 @@ fun CadastroTurmaScreen() {
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp),
+                            .height(65.dp),
+                        shape = RoundedCornerShape(5.dp),
                         singleLine = true,
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.White,
@@ -106,38 +120,14 @@ fun CadastroTurmaScreen() {
                         )
                     )
 
-                    TextField(
-                        value = matricula,
-                        onValueChange = { matricula = it },
-                        placeholder = {
-                            Text(
-                                text = stringResource(id = R.string.curso),
-                                fontSize = 19.sp,
-                                color = Color.Gray
-                            )
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp),
-                        singleLine = true,
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White,
-                            focusedTextColor = Color.Black,
-                            unfocusedTextColor = Color.Black,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            cursorColor = Color.Black
-                        )
-                    )
                 }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
 
             TextField(
-                value = email,
-                onValueChange = { email = it },
+                value = max.value,
+                onValueChange = { max.value = it },
                 placeholder = {
                     Text(
                         text = stringResource(id = R.string.capacidade),
@@ -148,6 +138,7 @@ fun CadastroTurmaScreen() {
                 modifier = Modifier
                     .fillMaxWidth(0.85f)
                     .padding(horizontal = 20.dp, vertical = 10.dp),
+                shape = RoundedCornerShape(5.dp),
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.White,
@@ -161,8 +152,34 @@ fun CadastroTurmaScreen() {
             )
 
             TextField(
-                value = telefone,
-                onValueChange = { telefone = it },
+                value = curso.value,
+                onValueChange = { curso.value = it },
+                placeholder = {
+                    Text(
+                        text = stringResource(id = R.string.curso),
+                        fontSize = 19.sp,
+                        color = Color.Gray
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth(0.85f)
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                shape = RoundedCornerShape(5.dp),
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    cursorColor = Color.Black
+                )
+            )
+
+            TextField(
+                value = periodo.value,
+                onValueChange = { periodo.value = it },
                 placeholder = {
                     Text(
                         text = stringResource(id = R.string.inicio),
@@ -173,6 +190,7 @@ fun CadastroTurmaScreen() {
                 modifier = Modifier
                     .fillMaxWidth(0.85f)
                     .padding(horizontal = 20.dp, vertical = 10.dp),
+                shape = RoundedCornerShape(5.dp),
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.White,
@@ -185,35 +203,35 @@ fun CadastroTurmaScreen() {
                 )
             )
 
-            TextField(
-                value = dataNascimento,
-                onValueChange = { dataNascimento = it },
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.fim),
-                        fontSize = 19.sp,
-                        color = Color.Gray
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth(0.85f)
-                    .padding(horizontal = 20.dp, vertical = 10.dp),
-                singleLine = true,
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
-                    focusedTextColor = Color.Black,
-                    unfocusedTextColor = Color.Black,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = Color.Black
-                )
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(130.dp))
 
             Button(
-                onClick = { /* ação ao finalizar cadastro */ },
+                onClick = {
+                    val turmaBody = Turma(
+                        nome = nome.value,
+                        max = max.value.toIntOrNull()?: 0,
+                        curso = curso.value,
+                        periodo = periodo.value
+                    )
+
+                    val sendTurma = RetrofitFactory()
+                        .getTurmaService()
+                        .insertTurma(turmaBody)
+
+                    sendTurma.enqueue(object : Callback<Result> {
+                        override fun onResponse(
+                            p0: Call<Result>,
+                            p1: Response<Result>
+                        ) {
+                            Log.d("Sucesso", "Cadastrado com sucesso")
+                        }
+
+                        override fun onFailure(p0: Call<Result>, p1: Throwable) {
+                            Log.d("Erro", "Não foi possivel cadastrar: ${p1.message}")
+                        }
+
+                    })
+                },
                 modifier = Modifier
                     .height(60.dp)
                     .width(300.dp),
@@ -236,5 +254,5 @@ fun CadastroTurmaScreen() {
 @Preview(showSystemUi = true)
 @Composable
 fun CadastroTurmaScreenPreview() {
-    CadastroTurmaScreen()
+    CadastroTurmaScreen(null)
 }
