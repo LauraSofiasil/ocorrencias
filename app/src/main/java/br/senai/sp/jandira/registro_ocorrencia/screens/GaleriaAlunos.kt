@@ -17,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LeadingIconTab
@@ -38,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.senai.sp.jandira.registro_ocorrencia.R
+import br.senai.sp.jandira.registro_ocorrencia.model.Alunos
+import br.senai.sp.jandira.registro_ocorrencia.model.AlunosResult
 import br.senai.sp.jandira.registro_ocorrencia.model.Turma
 import br.senai.sp.jandira.registro_ocorrencia.model.TurmasResult
 import br.senai.sp.jandira.registro_ocorrencia.service.RetrofitFactory
@@ -46,31 +50,28 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun galeriaTurmasScreen(navController: NavController?){
+fun galeriaAlunosScreen(){
 
     //Variável que aguarda
-    var turmaList = remember{
-        mutableStateOf(listOf<Turma>())
+    var alunosList = remember {
+        mutableStateOf(listOf<Alunos>())
     }
 
     //Obter um retrofict Factory
-    var  callTurmas = RetrofitFactory()
-        .getTurmaService()
+    var callAlunos = RetrofitFactory()
+        .getAlunoService()
         .listAll()
 
     //Enviar a requisição
-    callTurmas.enqueue(object : Callback<TurmasResult> {
-
-        override fun onResponse(p0: Call<TurmasResult>, response: Response<TurmasResult>) {
-            turmaList.value = response.body()!!.results
+    callAlunos.enqueue(object : Callback<AlunosResult> {
+        override fun onResponse(p0: Call<AlunosResult>, response: Response<AlunosResult>) {
+            alunosList.value = response.body()!!.results
         }
 
-        override fun onFailure(p0: Call<TurmasResult>, response: Throwable) {
-            TODO("Not yet implemented")
-        }
+        override fun onFailure(p0: Call<AlunosResult>, response: Throwable) {
 
+        }
     })
-
 
     Box(
         modifier = Modifier
@@ -86,7 +87,7 @@ fun galeriaTurmasScreen(navController: NavController?){
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0x5C000000))
+                .background(Color(0x595D5C5C))
         )
         Box(
             modifier = Modifier
@@ -101,11 +102,18 @@ fun galeriaTurmasScreen(navController: NavController?){
                 .background(Color.Transparent)
                 .padding(start = 20.dp, end = 20.dp)
         ) {
+            Text(
+                text = "Turma 4B",
+                fontSize = 36.sp,
+                color = Color.White,
+                modifier = Modifier
+                    .padding(top = 60.dp)
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.Transparent)
-                    .padding(top = 80.dp)
+                    .padding(top = 20.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -117,7 +125,7 @@ fun galeriaTurmasScreen(navController: NavController?){
                         onValueChange = {},
                         placeholder = {
                             Text(
-                                text = "Pesquise uma turma",
+                                text = "Pesquise um aluno",
                                 fontSize = 14.5.sp,
                                 color = Color(0xffB7B7B7)
                             )
@@ -142,80 +150,66 @@ fun galeriaTurmasScreen(navController: NavController?){
                     modifier = Modifier
                         .weight(0.5f)
                         .background(Color.Transparent)
+                        .padding(start = 40.dp)
+                        .padding(top = 10.dp)
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(20.dp)
-                            .padding(start = 55.dp)
-                            .padding(top = 10.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Text(
-                            text = "Ano:   ",
-                            fontSize = 10.sp,
-                            color = Color.White
-                        )
-                        Column (
-                            modifier = Modifier
-                                .width(15.dp)
-                                .height(15.dp)
-                                .background(Color.White),
-                        ){
-                            Icon(
-                                imageVector = Icons.Default.ArrowDropDown,
-                                contentDescription = "",
-                                tint = Color(0xffB7B7B7)
-                            )
-                        }
-                    }
+                    Text(
+                        text = "Qntd de alunos: 0",
+                        fontSize = 10.sp,
+                        color = Color.White
+                    )
+
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    Row(
-                        modifier = Modifier
-                            .height(10.dp)
-                            .fillMaxWidth()
-                            .padding(start = 50.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Text(
-                            text = "Curso:  ",
-                            fontSize = 10.sp,
-                            color = Color.White
-                        )
-                        Column (
-                            modifier = Modifier
-                                .width(15.dp)
-                                .height(25.dp)
-                                .background(Color.White),
-                        ){
-                            Icon(
-                                imageVector = Icons.Default.ArrowDropDown,
-                                contentDescription = "",
-                                tint = Color(0xffB7B7B7)
-                            )
-                        }
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            LazyColumn {
-                items(turmaList.value){
-                    CardTurmas(
-                        nome = it.nome,
+                Text(
+                    text = "Prof: XXXXX",
+                    fontSize = 10.sp,
+                    color = Color.White,
+                    modifier = Modifier
+                        .padding(start = 20.dp)
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(20.dp))
+
+            LazyColumn {
+                    items(alunosList.value){
+                        CardAlunosScreen(
+                            nome = it.nome
+                        )
+                    }
+            }
+
+            Spacer(modifier = Modifier.height(50.dp))
+
+            Button(
+                onClick = {},
+                modifier = Modifier
+                    .height(45.dp)
+                    .width(156.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF800000)
+                )
+            ) {
+                Text(
+                    text = "Adicionar aluno",
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    
+                )
+            }
         }
     }
-
 }
+
+
+
+
 
 @Preview
 @Composable
-private fun galeriaTurmasScreenPreview(){
-    galeriaTurmasScreen(null)
+private fun galeriaAlunosScreenPreview(){
+    galeriaAlunosScreen()
 }
