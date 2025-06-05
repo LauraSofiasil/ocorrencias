@@ -32,7 +32,7 @@ fun CardAlunosScreen(
     Card(
         modifier = Modifier
             .padding(bottom = 8.dp)
-            .fillMaxWidth()
+            .width(290.dp)
             .height(119.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xffFFFFFF))
     ) {
@@ -48,12 +48,14 @@ fun CardAlunosScreen(
                 colors = CardDefaults.cardColors(containerColor = Color.Cyan),
                 shape = CircleShape
             ){}
+
             Spacer(modifier = Modifier.width(16.dp))
+
             Column(
                 modifier = Modifier
-                    .padding(start = 50.dp),
+                    .padding(start = 20.dp),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "Aluno:",

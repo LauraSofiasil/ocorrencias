@@ -2,6 +2,7 @@ package br.senai.sp.jandira.registro_ocorrencia.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -173,6 +174,11 @@ fun galeriaAlunosScreen(){
             }
             Spacer(modifier = Modifier.height(20.dp))
 
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
             LazyColumn {
                     items(alunosList.value){
                         CardAlunosScreen(
@@ -181,25 +187,46 @@ fun galeriaAlunosScreen(){
                     }
             }
 
-            Spacer(modifier = Modifier.height(50.dp))
-
-            Button(
-                onClick = {},
-                modifier = Modifier
-                    .height(45.dp)
-                    .width(156.dp),
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF800000)
+                CardAlunosScreen(
+                nome = "Helena"
                 )
-            ) {
-                Text(
-                    text = "Adicionar aluno",
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    
+                CardAlunosScreen(
+                    nome = "Helena"
+                )
+                CardAlunosScreen(
+                    nome = "Helena"
+                )
+                CardAlunosScreen(
+                    nome = "Helena"
                 )
             }
+
+            Spacer(modifier = Modifier.height(50.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(
+                    onClick = {},
+                    modifier = Modifier
+                        .height(45.dp)
+                        .width(156.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF800000)
+                    )
+                ) {
+                    Text(
+                        text = "Adicionar aluno",
+                        color = Color.White,
+                        fontSize = 15.sp,
+
+                        )
+                }
+            }
+
         }
     }
 }
