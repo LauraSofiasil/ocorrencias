@@ -31,7 +31,7 @@ fun CardTurmas(
 ){
     Card(
         modifier = Modifier
-            .padding(bottom = 8.dp)
+            .padding(bottom = 14.dp)
             .fillMaxWidth()
             .height(119.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xffFFFFFF))
@@ -45,7 +45,7 @@ fun CardTurmas(
                 modifier = Modifier
                     .padding(start = 16.dp)
                     .size(90.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.Cyan),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFE1E1E1)),
                 shape = CircleShape
             ){}
             Spacer(modifier = Modifier.width(16.dp))

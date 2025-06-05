@@ -225,9 +225,6 @@ fun galeriaTurmasScreen(navController: NavController?){
             CardTurmas(
                 nome = "DS2A",
             )
-            CardTurmas(
-                nome = "DS2A",
-            )
 
             Spacer(modifier = Modifier.height(20.dp))
 
