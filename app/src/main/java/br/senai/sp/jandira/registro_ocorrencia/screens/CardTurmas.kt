@@ -18,16 +18,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.google.gson.annotations.SerializedName
+
 
 @Composable
 fun CardTurmas(
     nome: String = "Nome da turma",
+    Image: String = "https://yt3.googleusercontent.com/0cWwFDs9HatH-4hciGsPJjoRhQyI6L0pcpteLN5yl2_Vapb_AOsZiVK-JVIURCVscgBYTLeI=s900-c-k-c0x00ffffff-no-rj"
 ){
     Card(
         modifier = Modifier
@@ -47,7 +49,15 @@ fun CardTurmas(
                     .size(90.dp),
                 colors = CardDefaults.cardColors(containerColor = Color(0xFFE1E1E1)),
                 shape = CircleShape
-            ){}
+            ){
+                AsyncImage(
+                    model = Image,
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                )
+            }
             Spacer(modifier = Modifier.width(16.dp))
             Column(
                 modifier = Modifier

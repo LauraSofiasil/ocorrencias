@@ -1,5 +1,8 @@
 package br.senai.sp.jandira.registro_ocorrencia.model
 
+import com.google.gson.annotations.SerializedName
+
 data class TurmasResult(
-    var results: List<Turma>
+    @SerializedName("turmas") val results: List<Turma>
+
 )

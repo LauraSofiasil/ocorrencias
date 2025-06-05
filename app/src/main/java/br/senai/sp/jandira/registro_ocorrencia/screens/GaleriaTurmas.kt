@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.registro_ocorrencia.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -47,6 +48,7 @@ import br.senai.sp.jandira.registro_ocorrencia.service.RetrofitFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.log
 
 @Composable
 fun galeriaTurmasScreen(navController: NavController?){
@@ -65,11 +67,23 @@ fun galeriaTurmasScreen(navController: NavController?){
     callTurmas.enqueue(object : Callback<TurmasResult> {
 
         override fun onResponse(p0: Call<TurmasResult>, response: Response<TurmasResult>) {
-            turmaList.value = response.body()!!.results
+            val body = response.body()
+            //Log.e("test", body?.results.toString())
+            if (body != null && body.results != null) {
+                Log.e("Sucesso", "Uhuuul")
+                turmaList.value = body.results
+            } else {
+                Log.e("Erro", "Resposta inválida ou vazia")
+                turmaList.value = emptyList() // garante que não seja null
+            }
         }
 
         override fun onFailure(p0: Call<TurmasResult>, response: Throwable) {
-            TODO("Not yet implemented")
+            Log.e("Erro", "Não foi possível listar as turmas: ${response.message}")
+        }
+
+        override fun toString(): String {
+            return "`<no name provided>`()"
         }
 
     })
@@ -149,7 +163,7 @@ fun galeriaTurmasScreen(navController: NavController?){
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(20.dp)
+                            .height(30.dp)
                             .padding(start = 55.dp)
                             .padding(top = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -177,7 +191,7 @@ fun galeriaTurmasScreen(navController: NavController?){
 
                     Row(
                         modifier = Modifier
-                            .height(10.dp)
+                            .height(20.dp)
                             .fillMaxWidth()
                             .padding(start = 50.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -206,27 +220,21 @@ fun galeriaTurmasScreen(navController: NavController?){
             Spacer(modifier = Modifier.height(20.dp))
 
             LazyColumn {
+                //Log.e("API", turmaList.value.toString())
                 items(turmaList.value){
-                    CardTurmas(
-                        nome = it.nome,
-                    )
+                    //Log.e("API", it.nome)
+                    Button(
+                        onClick = {navController?.navigate("galeria_aluno")},
+                        modifier = Modifier,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0x00FFFFFF))
+                    ) {
+                        CardTurmas(
+                            nome = it.nome,
+                        )
+                    }
+
                 }
             }
-
-            CardTurmas(
-                nome = "DS2A",
-            )
-            CardTurmas(
-                nome = "DS2A",
-            )
-            CardTurmas(
-                nome = "DS2A",
-            )
-            CardTurmas(
-                nome = "DS2A",
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
 
             Row(
                 modifier = Modifier

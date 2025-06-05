@@ -4,3 +4,4 @@
         <domain includeSubdomains="true">10.107.144.10</domain>
     </domain-config>
 </network-security-config>
+

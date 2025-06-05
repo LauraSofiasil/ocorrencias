@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.registro_ocorrencia.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,13 +17,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LeadingIconTab
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -39,7 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import br.senai.sp.jandira.registro_ocorrencia.R
 import br.senai.sp.jandira.registro_ocorrencia.model.Alunos
 import br.senai.sp.jandira.registro_ocorrencia.model.AlunosResult
@@ -51,8 +49,52 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun galeriaAlunosScreen(){
+fun galeriaAlunosScreen(navController: NavHostController?) {
 
+    val nomeTurma = remember { mutableStateOf("Turma") }
+
+    var turmaList = remember{
+        mutableStateOf(listOf<Turma>())
+    }
+
+    //Obter um retrofict Factory
+    var  callTurmas = RetrofitFactory()
+        .getTurmaService()
+        .listAll()
+
+    //Enviar a requisição
+    callTurmas.enqueue(object : Callback<TurmasResult> {
+
+        override fun onResponse(p0: Call<TurmasResult>, response: Response<TurmasResult>) {
+            val body = response.body()
+            if (body != null && body.results != null) {
+                turmaList.value = body.results
+
+                // Aqui pegamos o nome da turma a partir do primeiro aluno
+                if (body.results.isNotEmpty()) {
+                    val turmaNomeApi = body.results[0].nome ?: "Turma Desconhecida"
+                    nomeTurma.value = turmaNomeApi
+                }
+
+            } else {
+                Log.e("Erro", "Resposta inválida ou vazia")
+                turmaList.value = emptyList() // garante que não seja null
+            }
+        }
+
+        override fun onFailure(p0: Call<TurmasResult>, response: Throwable) {
+            Log.e("Erro", "Não foi possível listar as turmas: ${response.message}")
+        }
+
+        override fun toString(): String {
+            return "`<no name provided>`()"
+        }
+
+    })
+
+
+
+//////////////ALUNOS//////////////////////////////
     //Variável que aguarda
     var alunosList = remember {
         mutableStateOf(listOf<Alunos>())
@@ -66,11 +108,24 @@ fun galeriaAlunosScreen(){
     //Enviar a requisição
     callAlunos.enqueue(object : Callback<AlunosResult> {
         override fun onResponse(p0: Call<AlunosResult>, response: Response<AlunosResult>) {
-            alunosList.value = response.body()!!.results
+           val body = response.body()
+            //Log.e("test", alunosList.value.toString())
+            if (body != null && body.results != null){
+                Log.e("Sucesso", "Entrou nas turmas")
+                alunosList.value = body.results
+
+            }else{
+                Log.e("Erro", "Resposta inválida ou vazia")
+                alunosList.value = emptyList() // garante que não seja null
+            }
         }
 
         override fun onFailure(p0: Call<AlunosResult>, response: Throwable) {
+            Log.e("Erro", "Não foi possível listar as turmas: ${response.message}")
+        }
 
+        override fun toString(): String {
+            return "`<no name provided>`()"
         }
     })
 
@@ -88,7 +143,7 @@ fun galeriaAlunosScreen(){
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0x595D5C5C))
+                .background(Color(0x8C000000))
         )
         Box(
             modifier = Modifier
@@ -104,7 +159,7 @@ fun galeriaAlunosScreen(){
                 .padding(start = 20.dp, end = 20.dp)
         ) {
             Text(
-                text = "Turma 4B",
+                text = "Turma: ${nomeTurma.value}",
                 fontSize = 36.sp,
                 color = Color.White,
                 modifier = Modifier
@@ -118,10 +173,10 @@ fun galeriaAlunosScreen(){
             ) {
                 Column(
                     modifier = Modifier
-                        .weight(1f)
+                        .fillMaxWidth()
                         .background(Color.Transparent)
                 ){
-                    TextField(
+                    OutlinedTextField(
                         value = "",
                         onValueChange = {},
                         placeholder = {
@@ -132,7 +187,7 @@ fun galeriaAlunosScreen(){
                             )
                         },
                         modifier = Modifier
-                            .width(210.dp),
+                            .width(350.dp),
                         shape = RoundedCornerShape(5.dp),
                         trailingIcon = {
                             Icon(
@@ -141,36 +196,35 @@ fun galeriaAlunosScreen(){
                                 tint = Color(0xffB7B7B7)
                             )
                         },
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color(0xffFFFDFD),
-                            unfocusedContainerColor = Color(0xffFFFDFD)
-                        )
+//                        colors = TextFieldDefaults.colors(
+//                            focusedContainerColor = Color(0xffFFFDFD),
+//                            unfocusedContainerColor = Color(0xffFFFDFD)
+//                        )
                     )
                 }
-                Column(
-                    modifier = Modifier
-                        .weight(0.5f)
-                        .background(Color.Transparent)
-                        .padding(start = 40.dp)
-                        .padding(top = 10.dp)
-                ) {
-                    Text(
-                        text = "Qntd de alunos: 0",
-                        fontSize = 10.sp,
-                        color = Color.White
-                    )
+//                Column(
+//                    modifier = Modifier
+//                        .weight(0.5f)
+//                        .background(Color.Transparent)
+//                        .padding(start = 20.dp)
+//                        .padding(top = 10.dp)
+//                ) {
+//                    Text(
+//                        text = "Qntd de alunos: ",
+//                        fontSize = 10.sp,
+//                        color = Color.White
+//                    )
+//
+//                    Spacer(modifier = Modifier.height(5.dp))
 
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = "Prof: XXXXX",
-                    fontSize = 10.sp,
-                    color = Color.White,
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                    )
-                }
+//                Text(
+//                    text = "Prof: XXXXX",
+//                    fontSize = 10.sp,
+//                    color = Color.White,
+//                    modifier = Modifier
+//                        .padding(start = 20.dp)
+//                    )
+                //}
             }
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -180,6 +234,7 @@ fun galeriaAlunosScreen(){
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
             LazyColumn {
+                //Log.e("API", alunosList.value.toString())
                     items(alunosList.value){
                         CardAlunosScreen(
                             nome = it.nome
@@ -187,18 +242,18 @@ fun galeriaAlunosScreen(){
                     }
             }
 
-                CardAlunosScreen(
-                nome = "Helena"
-                )
-                CardAlunosScreen(
-                    nome = "Helena"
-                )
-                CardAlunosScreen(
-                    nome = "Helena"
-                )
-                CardAlunosScreen(
-                    nome = "Helena"
-                )
+//                CardAlunosScreen(
+//                nome = "Helena"
+//                )
+//                CardAlunosScreen(
+//                    nome = "Helena"
+//                )
+//                CardAlunosScreen(
+//                    nome = "Helena"
+//                )
+//                CardAlunosScreen(
+//                    nome = "Helena"
+//                )
             }
 
             Spacer(modifier = Modifier.height(50.dp))
@@ -235,8 +290,9 @@ fun galeriaAlunosScreen(){
 
 
 
+
 @Preview
 @Composable
 private fun galeriaAlunosScreenPreview(){
-    galeriaAlunosScreen()
+    galeriaAlunosScreen(null)
 }
