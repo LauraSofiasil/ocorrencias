@@ -45,7 +45,7 @@ fun CardAlunosScreen(
                 modifier = Modifier
                     .padding(start = 16.dp)
                     .size(90.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.Cyan),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFE1E1E1)),
                 shape = CircleShape
             ){}
 
