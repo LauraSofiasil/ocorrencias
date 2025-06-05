@@ -13,6 +13,7 @@ import br.senai.sp.jandira.projetofinal.screens.CadastroAlunoScreen
 import br.senai.sp.jandira.projetofinal.screens.CadastroTurmaScreen
 import br.senai.sp.jandira.projetofinal.screens.HomeScreen
 import br.senai.sp.jandira.registro_ocorrencia.screens.NextScreen
+import br.senai.sp.jandira.registro_ocorrencia.screens.galeriaTurmasScreen
 import br.senai.sp.jandira.registro_ocorrencia.ui.theme.Registro_ocorrenciaTheme
 
 class MainActivity : ComponentActivity() {
@@ -35,11 +36,9 @@ fun AppNavGraph() {
         navController = navController,
         startDestination = "next_screen"
     ) {
-        composable("next_screen") {
-            NextScreen(navController)
-        }
-        composable("home_screen") {
-            CadastroAlunoScreen(navController)
-        }
+        composable("next_screen") { NextScreen(navController) }
+        composable("cadastro_aluno") { CadastroAlunoScreen(navController) }
+        composable("cadastro_turma") { CadastroTurmaScreen(navController) }
+        composable("galeria_turma") { galeriaTurmasScreen(navController) }
     }
 }

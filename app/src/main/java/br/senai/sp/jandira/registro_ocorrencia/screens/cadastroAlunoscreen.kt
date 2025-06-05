@@ -229,6 +229,9 @@ fun CadastroAlunoScreen(navController: NavController?) {
                         }
 
                     })
+
+                    navController?.navigate("galeria_turma")
+
                 },
                 modifier = Modifier
                     .height(60.dp)

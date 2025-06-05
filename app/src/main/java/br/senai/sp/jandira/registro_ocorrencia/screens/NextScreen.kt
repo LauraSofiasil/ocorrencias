@@ -36,7 +36,7 @@ fun NextScreen(navController: NavController?) {
                 .background(Color(0x80000000)) // deixa o fundo escuro
         ){
             Button(
-                onClick = { navController?.navigate("home_screen") },
+                onClick = { navController?.navigate("galeria_turma") },
                 modifier = Modifier
                     .align(Alignment.Center)
                     .height(60.dp)
