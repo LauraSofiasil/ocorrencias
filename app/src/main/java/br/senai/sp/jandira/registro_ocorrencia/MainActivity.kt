@@ -12,8 +12,10 @@ import androidx.navigation.compose.rememberNavController
 import br.senai.sp.jandira.projetofinal.screens.CadastroAlunoScreen
 import br.senai.sp.jandira.projetofinal.screens.CadastroTurmaScreen
 import br.senai.sp.jandira.registro_ocorrencia.screens.NextScreen
+import br.senai.sp.jandira.registro_ocorrencia.screens.RegistrarOcorrencia
 import br.senai.sp.jandira.registro_ocorrencia.screens.galeriaAlunosScreen
 import br.senai.sp.jandira.registro_ocorrencia.screens.galeriaTurmasScreen
+
 import br.senai.sp.jandira.registro_ocorrencia.ui.theme.Registro_ocorrenciaTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,6 +25,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Registro_ocorrenciaTheme {
                 AppNavGraph()
+                RegistrarOcorrencia()
             }
         }
     }

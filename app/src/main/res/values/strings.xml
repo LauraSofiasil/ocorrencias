@@ -3,6 +3,9 @@
     <string name="aluno">Alunos</string>
     <string name="cadastro">Cadastro</string>
     <string name="educador">Educador</string>
+    <string name="ocorrencia">Tipo Ocorrencia</string>
+    <string name="gravidade">Gravidade</string>
+    <string name="historico">Histórico Ocorrência</string>
     <string name="nome">Nome</string>
     <string name="turma">Turma</string>
     <string name="curso">Curso</string>
