@@ -34,23 +34,28 @@ fun RegistrarOcorrencia() {
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFD9B2B2))
-            .padding(16.dp)
+
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .background(Color(0xFF800000))
+                .align(Alignment.TopCenter)
+        )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().padding(start = 16.dp, end = 16.dp, top = 78.dp)
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
-
             Text(
                 text = "Registrar Ocorrência",
                 color = Color.White,
-                fontSize = 24.sp,
+                fontSize = 32.sp,
                 fontWeight = FontWeight.ExtraBold
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(100.dp))
 
 
             ExposedDropdownMenuBox(
@@ -66,6 +71,16 @@ fun RegistrarOcorrencia() {
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedTipo)
                     },
+                    shape = RoundedCornerShape(5.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        cursorColor = Color.Black
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .menuAnchor()
@@ -103,6 +118,16 @@ fun RegistrarOcorrencia() {
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedGravidade)
                     },
+                    shape = RoundedCornerShape(5.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        cursorColor = Color.Black
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .menuAnchor()
@@ -135,8 +160,19 @@ fun RegistrarOcorrencia() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(150.dp)
-                        .background(Color.White, RoundedCornerShape(8.dp))
+                        .background(Color.White, RoundedCornerShape(8.dp)),
+                    shape = RoundedCornerShape(5.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        cursorColor = Color.Black
+                    )
                 )
+
                 IconButton(
                     onClick = { historico = "" },
                     modifier = Modifier.align(Alignment.TopEnd)
@@ -154,21 +190,35 @@ fun RegistrarOcorrencia() {
                 placeholder = { Text("DD/MM/AA      00:00:00") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White, RoundedCornerShape(8.dp))
+                    .background(Color.White, RoundedCornerShape(8.dp)),
+                shape = RoundedCornerShape(5.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    cursorColor = Color.Black
+                )
             )
 
-            Spacer(modifier = Modifier.height(180.dp))
+            Spacer(modifier = Modifier.height(100.dp))
 
 
             Button(
                 onClick = { },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF800000)),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-
+                    .width(300.dp)
+                    .height(50.dp),
+                shape = RoundedCornerShape(8.dp)
             ) {
-                Text(text = "Registrar ocorrência", color = Color.White)
+                Text(
+                    text = "Registrar ocorrência",
+                    color = Color.White,
+                    fontSize = 20.sp
+                )
             }
         }
     }
