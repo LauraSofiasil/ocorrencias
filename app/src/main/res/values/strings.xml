@@ -7,6 +7,7 @@
     <string name="gravidade">Gravidade</string>
     <string name="historico">Histórico Ocorrência</string>
     <string name="nome">Nome</string>
+    <string name="nome_completo">Nome Completo</string>
     <string name="turma">Turma</string>
     <string name="curso">Curso</string>
     <string name="capacidade">Qntd máxima de alunos</string>
@@ -21,4 +22,5 @@
     <string name="finalizar">Finalizar Cadastro</string>
     <string name="matricula">N° matrícula</string>
     <string name="data">DD/MM/AA</string>
+    <string name="historico">Histórico de ocorrências</string>
 </resources>
