@@ -92,13 +92,10 @@ fun galeriaAlunosScreen(navController: NavHostController?) {
 
     })
 
+    ////////////////ALUNOS//////////////////////
 
-
-//////////////ALUNOS//////////////////////////////
     //Variável que aguarda
-    var alunosList = remember {
-        mutableStateOf(listOf<Alunos>())
-    }
+    var alunosList = remember { mutableStateOf(listOf<Alunos>()) }
 
     //Obter um retrofict Factory
     var callAlunos = RetrofitFactory()
@@ -109,9 +106,9 @@ fun galeriaAlunosScreen(navController: NavHostController?) {
     callAlunos.enqueue(object : Callback<AlunosResult> {
         override fun onResponse(p0: Call<AlunosResult>, response: Response<AlunosResult>) {
            val body = response.body()
-            //Log.e("test", alunosList.value.toString())
+            Log.e("test", alunosList.value.toString())
             if (body != null && body.results != null){
-                Log.e("Sucesso", "Entrou nas turmas")
+                Log.e("Sucesso", "Entrou nos alunos")
                 alunosList.value = body.results
 
             }else{
@@ -121,7 +118,7 @@ fun galeriaAlunosScreen(navController: NavHostController?) {
         }
 
         override fun onFailure(p0: Call<AlunosResult>, response: Throwable) {
-            Log.e("Erro", "Não foi possível listar as turmas: ${response.message}")
+            Log.e("Erro", "Não foi possível listar os alunos: ${response.message}")
         }
 
         override fun toString(): String {
@@ -234,14 +231,15 @@ fun galeriaAlunosScreen(navController: NavHostController?) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
             LazyColumn {
-                //Log.e("API", alunosList.value.toString())
+                Log.e("API", alunosList.value.toString())
                     items(alunosList.value){
                         CardAlunosScreen(
-                            nome = it.nome
+                            nome = it.nome,
+
                         )
                     }
             }
-
+//
 //                CardAlunosScreen(
 //                nome = "Helena"
 //                )
