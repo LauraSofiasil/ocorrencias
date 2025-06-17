@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -47,6 +48,7 @@ import br.senai.sp.jandira.registro_ocorrencia.service.RetrofitFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 @Composable
 fun galeriaAlunosScreen(navController: NavHostController?) {
@@ -72,9 +74,10 @@ fun galeriaAlunosScreen(navController: NavHostController?) {
 
                 // Aqui pegamos o nome da turma a partir do primeiro aluno
                 if (body.results.isNotEmpty()) {
-                    val turmaNomeApi = body.results[0].nome ?: "Turma Desconhecida"
+                    val turmaNomeApi = body.results[2].nome ?: "Turma Desconhecida"
                     nomeTurma.value = turmaNomeApi
                 }
+
 
             } else {
                 Log.e("Erro", "Resposta inválida ou vazia")
@@ -233,10 +236,16 @@ fun galeriaAlunosScreen(navController: NavHostController?) {
             LazyColumn {
                 Log.e("API", alunosList.value.toString())
                     items(alunosList.value){
-                        CardAlunosScreen(
-                            nome = it.nome,
+                        Button(
+                            onClick = {navController?.navigate("dados_aluno")},
+                            modifier = Modifier,
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0x00FFFFFF))
+                        ) {
+                            CardAlunosScreen(
+                                nome = it.nome,
 
-                        )
+                                )
+                        }
                     }
             }
 //

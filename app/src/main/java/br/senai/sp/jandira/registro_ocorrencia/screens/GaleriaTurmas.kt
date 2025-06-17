@@ -53,6 +53,8 @@ import kotlin.math.log
 @Composable
 fun galeriaTurmasScreen(navController: NavController?){
 
+    val idSelecionado = remember { mutableStateOf<Int?>(null) }
+
     //Variável que aguarda
     var turmaList = remember{
         mutableStateOf(listOf<Turma>())
@@ -224,7 +226,10 @@ fun galeriaTurmasScreen(navController: NavController?){
                 items(turmaList.value){
                     //Log.e("API", it.nome)
                     Button(
-                        onClick = {navController?.navigate("galeria_aluno")},
+                        onClick = {
+                                    idSelecionado.value = 3
+                                    navController?.navigate("galeria_aluno")
+                                  },
                         modifier = Modifier,
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0x00FFFFFF))
                     ) {

@@ -32,6 +32,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,11 +44,107 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import br.senai.sp.jandira.registro_ocorrencia.R
+import br.senai.sp.jandira.registro_ocorrencia.model.Alunos
+import br.senai.sp.jandira.registro_ocorrencia.model.AlunosResult
+import br.senai.sp.jandira.registro_ocorrencia.model.Ocorrencias
+import br.senai.sp.jandira.registro_ocorrencia.model.Turma
+import br.senai.sp.jandira.registro_ocorrencia.model.TurmasResult
+import br.senai.sp.jandira.registro_ocorrencia.model.ocorrenciaResult
+import br.senai.sp.jandira.registro_ocorrencia.service.RetrofitFactory
 import coil.compose.AsyncImage
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
-fun DadosAlunoScreen(){
+fun DadosAlunoScreen(navController: NavController?){
+
+    val nomeAluno = remember { mutableStateOf("") }
+
+    val matriculaAluno = remember { mutableStateOf("") }
+
+    val nascimento = remember { mutableStateOf("") }
+
+    var alunosList = remember { mutableStateOf(listOf<Alunos>()) }
+
+    //Obter um retrofict Factory
+    var callAlunos = RetrofitFactory()
+        .getAlunoService()
+        .listAll()
+
+    //Enviar a requisição
+    callAlunos.enqueue(object : Callback<AlunosResult> {
+        override fun onResponse(p0: Call<AlunosResult>, response: Response<AlunosResult>) {
+            val body = response.body()
+            Log.e("test", alunosList.value.toString())
+            if (body != null && body.results != null){
+                Log.e("Sucesso", "Entrou nos alunos")
+                alunosList.value = body.results
+
+                // Aqui pegamos o nome da turma a partir do primeiro aluno
+                if (body.results.isNotEmpty()) {
+                    val alunoNomeApi = body.results[0].nome ?: "Aluno Desconhecida"
+                    nomeAluno.value = alunoNomeApi
+                }
+
+                if (body.results.isNotEmpty()) {
+                    val alunoMatriculaApi = body.results[0].matricula ?: "Aluno Desconhecida"
+                    matriculaAluno.value = alunoMatriculaApi
+                }
+
+                if (body.results.isNotEmpty()) {
+                    val alunoNascimentoApi = body.results[0].nascimento ?: "Aluno Desconhecida"
+                    nascimento.value = alunoNascimentoApi
+                }
+
+
+
+            }else{
+                Log.e("Erro", "Resposta inválida ou vazia")
+                alunosList.value = emptyList() // garante que não seja null
+            }
+        }
+
+        override fun onFailure(p0: Call<AlunosResult>, response: Throwable) {
+            Log.e("Erro", "Não foi possível listar os alunos: ${response.message}")
+        }
+
+        override fun toString(): String {
+            return "`<no name provided>`()"
+        }
+    })
+
+    /////////////////Histórico//////////////////////////////
+
+//    var ocorrenciaList = remember { mutableStateOf(listOf<Ocorrencias>()) }
+//
+//    //Obter um retrofict Factory
+//    var callOcorrencia = RetrofitFactory()
+//        .getOcorrenciaService()
+//        .listAll()
+//    //Enviar a requisição
+//    callOcorrencia.enqueue(object : Callback<ocorrenciaResult> {
+//        override fun onResponse(p0: Call<ocorrenciaResult>, response: Response<ocorrenciaResult>) {
+//            val body = response.body()
+//            Log.e("test", ocorrenciaList.value.toString())
+//            if (body != null && body.results != null){
+//                Log.e("Sucesso", "Entrou nos alunos")
+//                ocorrenciaList.value = body.results
+//
+//            }else{
+//                Log.e("Erro", "Resposta inválida ou vazia")
+//                ocorrenciaList.value = emptyList() // garante que não seja null
+//            }
+//        }
+//
+//        override fun onFailure(p0: Call<ocorrenciaResult>, response: Throwable) {
+//            Log.e("Erro", "Não foi possível listar os alunos: ${response.message}")
+//        }
+//    })
+
+    ///////////////////////////////////////////////////////
 
     Box(
         modifier = Modifier
@@ -99,9 +197,9 @@ fun DadosAlunoScreen(){
                 onValueChange = {},
                 placeholder = {
                     Text(
-                        text = stringResource(R.string.nome_completo),
+                        text = nomeAluno.value,
                         fontSize = 14.sp,
-                        color = Color(0xffD7D7D7)
+                        color = Color(0xFFCBCACA)
                     )
                 },
                 modifier = Modifier
@@ -125,7 +223,7 @@ fun DadosAlunoScreen(){
                 onValueChange = {},
                 placeholder = {
                     Text(
-                        text = stringResource(R.string.matricula),
+                        text = matriculaAluno.value,
                         fontSize = 14.sp,
                         color = Color(0xffD7D7D7)
                     )
@@ -156,7 +254,7 @@ fun DadosAlunoScreen(){
                     onValueChange = {},
                     placeholder = {
                         Text(
-                            text = stringResource(R.string.data),
+                            text = nascimento.value,
                             fontSize = 14.sp,
                             color = Color(0xffD7D7D7)
                         )
@@ -185,7 +283,7 @@ fun DadosAlunoScreen(){
                     onValueChange = {},
                     placeholder = {
                         Text(
-                            text = stringResource(R.string.turma),
+                            text = "DS4A",
                             fontSize = 14.sp,
                             color = Color(0xffD7D7D7)
                         )
@@ -211,7 +309,7 @@ fun DadosAlunoScreen(){
                 onValueChange = {},
                 placeholder = {
                     Text(
-                        text = stringResource(R.string.curso),
+                        text = "Desenvolvimento de sistemas",
                         fontSize = 14.sp,
                         color = Color(0xffD7D7D7)
                     )
@@ -297,7 +395,9 @@ fun DadosAlunoScreen(){
                 Spacer(modifier = Modifier.width(15.dp))
 
                 Button(
-                    onClick = {},
+                    onClick = {
+                        navController?.navigate("registro")
+                    },
                     modifier = Modifier
                         .height(45.dp)
                         .width(164.dp),
@@ -320,5 +420,5 @@ fun DadosAlunoScreen(){
 @Preview
 @Composable
 private fun DadosAlunoScreenPrreview(){
-    DadosAlunoScreen()
+    DadosAlunoScreen(null)
 }

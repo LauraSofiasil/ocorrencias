@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.senai.sp.jandira.projetofinal.screens.CadastroAlunoScreen
 import br.senai.sp.jandira.projetofinal.screens.CadastroTurmaScreen
+import br.senai.sp.jandira.registro_ocorrencia.screens.DadosAlunoScreen
 import br.senai.sp.jandira.registro_ocorrencia.screens.NextScreen
 import br.senai.sp.jandira.registro_ocorrencia.screens.RegistrarOcorrencia
 import br.senai.sp.jandira.registro_ocorrencia.screens.galeriaAlunosScreen
@@ -25,7 +26,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             Registro_ocorrenciaTheme {
                 AppNavGraph()
-                RegistrarOcorrencia()
             }
         }
     }
@@ -44,5 +44,7 @@ fun AppNavGraph() {
         composable("cadastro_turma") { CadastroTurmaScreen(navController) }
         composable("galeria_turma") { galeriaTurmasScreen(navController) }
         composable("galeria_aluno") { galeriaAlunosScreen(navController) }
+        composable("dados_aluno") { DadosAlunoScreen(navController) }
+        composable("registro") { RegistrarOcorrencia(navController) }
     }
 }

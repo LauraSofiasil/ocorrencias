@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.registro_ocorrencia.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,13 +16,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import br.senai.sp.jandira.registro_ocorrencia.R
+import br.senai.sp.jandira.registro_ocorrencia.model.Educador
+import br.senai.sp.jandira.registro_ocorrencia.model.Ocorrencias
+import br.senai.sp.jandira.registro_ocorrencia.model.ResultEducador
+import br.senai.sp.jandira.registro_ocorrencia.model.ocorrenciaResult
+import br.senai.sp.jandira.registro_ocorrencia.service.RetrofitFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistrarOcorrencia() {
-    val tipos = listOf("Agressão", "Furto", "Bullying")
+fun RegistrarOcorrencia(navController: NavHostController?) {
+
+    val tipos = listOf("Agressão fisica", "Furto", "Bullying")
     val gravidades = listOf("Leve", "Média", "Grave")
+
+    var relato = remember { mutableStateOf("") }
 
     var tipoSelecionado by remember { mutableStateOf("") }
     var gravidadeSelecionada by remember { mutableStateOf("") }
@@ -154,8 +167,8 @@ fun RegistrarOcorrencia() {
 
             Box(modifier = Modifier.fillMaxWidth()) {
                 TextField(
-                    value = historico,
-                    onValueChange = { historico = it },
+                    value = relato.value,
+                    onValueChange = { relato.value = it },
                     label = { Text(stringResource(id = R.string.historico)) },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -207,7 +220,40 @@ fun RegistrarOcorrencia() {
 
 
             Button(
-                onClick = { },
+                onClick = {
+                    val ocorrenciasBody = Ocorrencias(
+                        relato = relato.value,
+                        gravidades = when (gravidadeSelecionada) {
+                            "Leve" -> 1
+                            "Média" -> 2
+                            "Grave" -> 3
+                            else -> 0
+                        },
+                        tipos = when (tipoSelecionado) {
+                            "Agressão" -> 1
+                            "Furto" -> 2
+                            "Bullying" -> 3
+                            else -> 0
+                        }
+                    )
+                    val sendocorrencia = RetrofitFactory()
+                        .getOcorrenciaService()
+                        .insertOcorrencia(ocorrenciasBody)
+
+                    sendocorrencia.enqueue(object : Callback<ocorrenciaResult> {
+                        override fun onResponse(
+                            p0: Call<ocorrenciaResult>,
+                            p1: Response<ocorrenciaResult>
+                        ) {
+                            Log.d("Sucesso", "Registrado com sucesso")
+                        }
+
+                        override fun onFailure(p0: Call<ocorrenciaResult>, p1: Throwable) {
+                            Log.d("Erro", "Não foi possivel cadastrar: ${p1.message}")
+                        }
+
+                    })
+                },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF800000)),
                 modifier = Modifier
                     .width(300.dp)
@@ -224,8 +270,10 @@ fun RegistrarOcorrencia() {
     }
 }
 
+
+
 @Preview
 @Composable
 private fun RegistrarOcorrenciaScreenPreview() {
-    RegistrarOcorrencia()
+    RegistrarOcorrencia(null)
 }
